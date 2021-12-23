@@ -23,3 +23,8 @@ class UpdateUserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('username',)
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        exclude = ['title', 'image','content','timestamp']
