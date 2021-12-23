@@ -108,3 +108,9 @@ def new_business(request):
     else:
         form = NewBusinessForm()
     return render(request, 'new_business.html', {"form": form})
+
+@login_required(login_url='/accounts/login')
+def view_biz(request, id):
+    biz = Business.objects.get(id=id)
+    return render(request, {'business':biz,
+    })
