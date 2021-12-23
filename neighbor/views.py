@@ -125,3 +125,20 @@ def search(request):
     else:
         message = "No results found, please try again"
     return render(request, 'search.html', {'message': message})
+
+@login_required(login_url='/accounts/login/')
+def new_post(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = current_user
+
+            post.save()
+
+        return redirect('index')
+
+    else:
+        form = PostForm()
+    return render(request, 'new_post.html', {"form": form})
