@@ -83,4 +83,3 @@ class Post(models.Model):
         self.delete()
 
 
-
