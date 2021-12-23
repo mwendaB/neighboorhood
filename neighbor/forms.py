@@ -1,4 +1,4 @@
-from .models import Business, Neighbourhood, Post, Profile
+from .models import Business, Neighborhood, Post, Profile
 from django.contrib.auth.models import User
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
@@ -30,9 +30,9 @@ class PostForm(forms.ModelForm):
         exclude = ['title', 'image','content','timestamp']
 
 
-class NewNeighbourhoodForm(forms.ModelForm):
+class NewNeighborhoodForm(forms.ModelForm):
     class Meta:
-        model = Neighbourhood
+        model = Neighborhood
         exclude = ('admin',)
 
 class NewBusinessForm(forms.ModelForm):
