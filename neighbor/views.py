@@ -68,5 +68,9 @@ def neigborhood(request):
     return render(request, 'newneighborhood.html', {"form": form})
 
 
-
-
+@login_required(login_url='/accounts/login/')
+def joinneigborhood(request, id):
+    neigborhood = get_object_or_404(Neighborhood, id=id)
+    request.user.profile.neighborhood = neigborhood
+    request.user.profile.save()
+    return redirect('index') 
