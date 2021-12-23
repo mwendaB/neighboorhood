@@ -83,7 +83,7 @@ def leaveneigborhood(request, id):
 
 
 @login_required(login_url='/accounts/login')
-def view_hood(request, id):
+def view_neigborhood(request, id):
     neigborhood = Neighborhood.objects.get(id=id)
     biz = Business.objects.filter(business_hood=id)
     post = Post.objects.filter(neighbourhood=id)
@@ -91,3 +91,20 @@ def view_hood(request, id):
     return render(request, 'view_neigborhood.html',  {
         'neigborhood': neigborhood,'business':biz,'post': post
     })
+
+@login_required(login_url='/accounts/login/')
+def new_business(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = NewBusinessForm(request.POST, request.FILES)
+        if form.is_valid():
+            biz = form.save(commit=False)
+            biz.user = current_user
+
+            biz.save()
+
+        return redirect('index')
+
+    else:
+        form = NewBusinessForm()
+    return render(request, 'new_business.html', {"form": form})
