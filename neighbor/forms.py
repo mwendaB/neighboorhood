@@ -30,7 +30,7 @@ class PostForm(forms.ModelForm):
         exclude = ['title', 'image','content','timestamp']
 
 
-class NewHoodForm(forms.ModelForm):
+class NewNeighbourhoodForm(forms.ModelForm):
     class Meta:
         model = Neighbourhood
         exclude = ('admin',)
