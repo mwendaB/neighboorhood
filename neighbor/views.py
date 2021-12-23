@@ -10,7 +10,6 @@ from django.contrib.auth import login, authenticate
 
 
 def index(request):
-  
     neigborhoods = Neighborhood.objects.all()
     return render(request, 'index.html', {"neigborhoods": neigborhoods})
 
