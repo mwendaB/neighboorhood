@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import Business, Neighborhood, Post, Profile
 from django.contrib.auth.models import User
-from .forms import NewBusinessForm, NewHoodForm, PostForm, SignUpForm, UpdateProfileForm, UpdateUserForm
+from .forms import NewBusinessForm, NewNeighborhoodForm, PostForm, SignUpForm, UpdateProfileForm, UpdateUserForm
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404, render, redirect
@@ -49,3 +49,24 @@ def update_profile(request, id):
         return HttpResponseRedirect("/profile")
 
     return render(request, "registration/update_profile.html", {"form": form, "form2": form2})
+
+@login_required(login_url='/accounts/login/')
+def neigborhood(request):
+    
+    if request.method == 'POST':
+        form = NewNeighborhoodForm(request.POST, request.FILES)
+        if form.is_valid():
+            neigborhood = form.save(commit=False)
+            neigborhood.admin = request.user
+
+            neigborhood.save()
+
+        return redirect('index')
+
+    else:
+        form = NewNeighborhoodForm()
+    return render(request, 'newneighborhood.html', {"form": form})
+
+
+
+
