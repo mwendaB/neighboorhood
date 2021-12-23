@@ -80,3 +80,14 @@ def leaveneigborhood(request, id):
     request.user.profile.neighborhood = None
     request.user.profile.save()
     return redirect('index')    
+
+
+@login_required(login_url='/accounts/login')
+def view_hood(request, id):
+    neigborhood = Neighborhood.objects.get(id=id)
+    biz = Business.objects.filter(business_hood=id)
+    post = Post.objects.filter(neighbourhood=id)
+
+    return render(request, 'view_neigborhood.html',  {
+        'neigborhood': neigborhood,'business':biz,'post': post
+    })
