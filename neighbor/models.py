@@ -36,8 +36,6 @@ class Neighbourhood(models.Model):
         return self.neighbourhood_users.count() 
 
 
-
-
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     idNo = models.IntegerField(default=0)
@@ -64,5 +62,25 @@ class Profile(models.Model):
 
     def update_profile(cls, id):
         Profile.objects.get(user_id=id)
+
+
+class Post(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    title = models.CharField(max_length=150)
+    image = CloudinaryField('images')
+    content = models.TextField(max_length=300, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    neighbourhood = models.ForeignKey(
+        Neighbourhood, on_delete=models.CASCADE, default='', null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+    def save_post(self):
+        return self.save()
+
+    def delete_post(self):
+        self.delete()
+
 
 
