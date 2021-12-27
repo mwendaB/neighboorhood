@@ -33,7 +33,7 @@ class Neighborhood(models.Model):
 
     @property
     def occupants_count(self):
-        return self.neighbourhood_users.count() 
+        return self.neighborhood_users.count() 
 
 
 class Profile(models.Model):

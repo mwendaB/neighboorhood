@@ -10,11 +10,11 @@ urlpatterns = [
     path('profile/',views.profile, name='profile'),
     path('search/', views.search, name='search'),
     path('joinneigborhood/<id>', views.joinneigborhood, name='joinneigborhood'),
-    path('leavehood/<id>', views.leaveneigborhood, name='leaveneigborhood'),
+    path('leaveneighborhood/<id>', views.leaveneigborhood, name='leaveneigborhood'),
     path('update/<id>', views.update_profile, name='update_profile'),
-    path('hood_info/(?P<id>\d+)', views.view_neigborhood, name='view_hood'),
+    path('neigborhood_info/(?P<id>\d+)', views.view_neigborhood, name='view_neigborhood'),
     path('new_business/', views.new_business, name='new_business'),
-    path('newhood/', views.neigborhood, name='hood'),
+    path('newneigborhood/', views.neigborhood, name='neigborhood'),
     path('new_post', views.new_post, name='post'),  
 
 ]

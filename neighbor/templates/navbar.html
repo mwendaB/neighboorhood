@@ -1,0 +1,44 @@
+<nav class="navbar navbar-inverse navbar-expand-xl navbar-dark" style="background-color: black;">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/"><i class=""></i><b>Neighborhood</b></a>
+      <a class="navbar-brand" href="/"><i class=""></i>Home</a>
+        <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+            <span class="navbar-toggler-icon"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+    </div>
+    <div id="navbarCollapse" class="collapse navbar-collapse">
+        <ul></ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="{%url 'new_business'%}"><i class="fa fa-plus-circle"></i><span>Add business</span></a></li>
+            {% if user.username == 'admin' %}
+            <li><a href="{%url 'neigborhood' %}"><i class="fa fa-plus-circle"></i><span>Add Neigborhood</span></a></li>
+            {%endif%}
+            <form class="navbar-form form-inline" role="search" action="{% url 'search' %}">
+              <div class="input-group search-box">
+                  <input type="text" id="search" class="form-control" placeholder="Search business..." name="business">
+                  <span class="input-group-addon"><i class="material-icons">&#xE8B6;</i></span>
+              </div>
+          </form>
+            <li class="dropdown">
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle user-action">
+                    <img src="{{user.profile.profile_pic.url }}" class="fas fa fa-user"
+                        alt="Avatar"
+                        onerror="this.src='https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-High-Quality-Image.png'" style="color:white">
+
+                    {{user.username}}<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'profile' %}"><i class="fa fa-user-circle-o" aria-hidden="true"></class=>"></i> Profile</a></li>
+                    
+                    <li class="divider"></li>
+                    {% if user.is_authenticated %}
+                    <li><a href="/logout"><i class="material-icons">&#xE8AC;</i> Signout</a></li>
+                    {% endif %}
+                </ul>
+            </li>
+    </div>
+    </ul>
+    </div>
+</nav>

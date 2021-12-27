@@ -86,7 +86,7 @@ def leaveneigborhood(request, id):
 def view_neigborhood(request, id):
     neigborhood = Neighborhood.objects.get(id=id)
     biz = Business.objects.filter(business_hood=id)
-    post = Post.objects.filter(neighbourhood=id)
+    post = Post.objects.filter(neighborhood=id)
 
     return render(request, 'view_neigborhood.html',  {
         'neigborhood': neigborhood,'business':biz,'post': post
