@@ -15,6 +15,7 @@ import os
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+from decouple import config
 import django_heroku
 import dj_database_url
 
@@ -91,7 +92,11 @@ DATABASES = {
         'PASSWORD' :'mwendaB',
     }
 }
-
+cloudinary.config( 
+    cloud_name =config('CLOUD_NAME'),
+    api_key=config('CLOUD_API_KEY'), 
+    api_secret=config('API_SECRET'),
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
