@@ -1,99 +1,68 @@
 from django.db import models
 from django.contrib.auth.models import User
-from cloudinary.models import CloudinaryField
-from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.db.models.signals import post_save
+import datetime as dt
+from cloudinary.models import CloudinaryField
+
 
 # Create your models here.
-class Neighborhood(models.Model):
-    neigborhood_name = models.CharField(max_length=200)
-    neigborhood_location = models.CharField(max_length=200)
-    neigborhood_description = models.TextField(max_length=500, blank=True)
-    neigborhood_photo = CloudinaryField('photo', default='photo')
-    admin = models.ForeignKey(
-    User, on_delete=models.CASCADE, related_name='admin')
-
-
-    def __str__(self):
-        return self.neigborhood_name
-
-    def save_neigborhood(self):
-        self.save()
-
-    def delete_neigborhood(self):
-        self.delete()    
-
-    def update_neighborhood(self):
-        neigborhood_name = self.neigborhood_name
-        self.neigborhood_name = neigborhood_name    
-
-    @classmethod
-    def find_neigborhood(cls, neigborhood_id):
-        return cls.objects.filter(id=neigborhood_id)
-
-    @property
-    def occupants_count(self):
-        return self.neighborhood_users.count() 
-
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    idNo = models.IntegerField(default=0)
-    email = models.CharField(max_length=30, blank=True)
-    profile_pic = CloudinaryField('profile')
-    bio = models.TextField(max_length=500, blank=True)
-    neighborhood = models.ForeignKey(
-    Neighborhood, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    name = models.CharField(max_length=80, blank=True)
+    bio = models.TextField(max_length=254, blank=True)
+    profile_picture = CloudinaryField('image')
+    location = models.CharField(max_length=50, blank=True, null=True)
+    neighbourhood = models.ForeignKey('Neighbourhood', on_delete=models.SET_NULL, null=True, related_name='members', blank=True)
 
     def __str__(self):
-        return self.user.username
+        return f'{self.user.username} profile'
 
     @receiver(post_save, sender=User)
-    def update_user_profile(sender, instance, created, **kwargs):
+    def create_user_profile(sender, instance, created, **kwargs):
         if created:
             Profile.objects.create(user=instance)
+
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
 
-    def save_profile(self):
-        self.save()
 
-    def delete_profile(self):
-        self.delete()
+class Neighbourhood(models.Model):
+    name = models.CharField(max_length=50)
+    location = models.CharField(max_length=60)
+    admin = models.ForeignKey("Profile", on_delete=models.CASCADE, related_name='hood')
+    neighbourhood_logo = CloudinaryField('image')
+    description = models.TextField()
+    healthcenter_number = models.IntegerField(null=True, blank=True)
+    police_number = models.IntegerField(null=True, blank=True)
+    occupants_count = models.IntegerField(null=True, blank=True)
 
-    def update_profile(cls, id):
-        Profile.objects.get(user_id=id)
-
-
-class Post(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    title = models.CharField(max_length=150)
-    image = CloudinaryField('images')
-    content = models.TextField(max_length=300, blank=True)
-    timestamp = models.DateTimeField(auto_now_add=True)
-    neighborhood = models.ForeignKey(
-    Neighborhood, on_delete=models.CASCADE, default='', null=True, blank=True)
 
     def __str__(self):
-        return self.title
+        return f'{self.name} hood'
 
-    def save_post(self):
-        return self.save()
+    def save_neighborhood(self):
+        self.save()
 
-    def delete_post(self):
+    def delete_neighborhood(self):
         self.delete()
+
+    @classmethod
+    def find_neighborhood(cls, neighborhood_id):
+        return cls.objects.filter(id=neighborhood_id)
 
 
 class Business(models.Model):
-    business_name = models.CharField(max_length=250)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    business_hood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE)
-    business_email = models.CharField(max_length=30)
-    business_desc = models.TextField(blank=True)
-
+    name = models.CharField(max_length=120)
+    email = models.EmailField(max_length=254)
+    description = models.TextField(blank=True)
+    neighbourhood = models.ForeignKey('Neighbourhood', on_delete=models.CASCADE, related_name='business')
+    user = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='owner')
 
     def __str__(self):
-       
-        return f'{self.business_name} business'
+        return f'{self.name} Business'
 
     def save_business(self):
         self.save()
@@ -101,20 +70,21 @@ class Business(models.Model):
     def delete_business(self):
         self.delete()
 
-    @classmethod
-    def get_business(cls, business_id):
-        business = cls.objects.get(id=business_id)
-        return business
 
-    @classmethod
-    def business_by_id(cls, id):
-        business = Business.objects.filter(id=id)
-        return business
+class Post(models.Model):
+    title = models.CharField(max_length=120, null=True)
+    post = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='post_owner')
+    hood = models.ForeignKey('Neighbourhood', on_delete=models.CASCADE, related_name='hood_post')
 
-    def update_business(self):
-        name = self.business_name
-        self.business_name = name
 
-    @classmethod
-    def search_business(cls, name):
-        return cls.objects.filter(business_name__icontains=name).all()
+    def __str__(self):
+        return f'{self.title} Post'
+
+    def save_post(self):
+        self.save()
+
+    def delete_post(self):
+        self.delete()
+
