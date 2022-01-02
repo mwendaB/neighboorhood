@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'home.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'hooods',
+        'NAME': 'hood',
         'USER': 'moringaschool',
         'PASSWORD':'mwendaB',
     }
