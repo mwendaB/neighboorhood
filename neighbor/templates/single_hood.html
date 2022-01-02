@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container-fluid page2">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card hood-info mb-3">
+          <div class="row no-gutters">
+            <div class="col-md-5">
+              <img src="{{ hood.neighbourhood_logo.url }}" class="img-thumbnail" alt="">
+            </div>
+            <div class="col-md-7">
+              <div class="card-body">
+                <h5 class="card-title tt" style="font-size: 30px; font-weight: 900;">{{ hood.name }} ({{hood.location}})</h5>
+                <h6 class="card-text" style="color: black; font-size:17px;">
+                  <span ><strong>{{hood.members.count}}</strong> Member{{hood.members.count|pluralize}}</span>
+                  | <strong>{{ hood.business.count }}</strong> Businesses | <strong>
+                    {{ hood.hood_post.count }}</strong> Post{{ hood.hood_post.count|pluralize }}
+                </h6>
+                <p class="card-text"style="color: black; font-size:20px;">{{hood.description}}</p>
+                <p class="card-text" style="color: black; font-size:15px;"><span class="text-info">Police Contact</span>
+                  &nbsp;<strong>{{hood.police_number}}</strong> |
+                  <span class="text-info" style="color: black;">Hospital Contact</span> <strong>{{hood.healthcenter_number}}</strong></p>
+                <p class="card-text" style="color: black;">Hood Admin: 
+                    {{ hood.admin.user.username }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container hoode">
+      <div class="row">
+        <div class="col-md-12">
+          <a href="" class="btn btn-sm btn-info mb-4 mr-4" data-toggle="modal" data-target="#Business">Add New
+            Business</a>
+          <a class="btn btn-sm btn-info mb-4" href="{% url 'post' hood.id %}">Add New Post</a>
+          {% if hood.admin == user.profile %}
+          {% endif %}
+          <div class="row two-sections">
+          <div class="col-md-6">
+          <h5 class="D-block mx-auto tt" style="color:white;">Available Businesses</h5>
+            {% for busines in business %}
+            
+              <div class="card business mb-4">
+                <div class="card-body">
+                  <h6 class="card-title" style="font-size: 23px; font-weight: 900;">{{busines.name}}</h6>
+                  <span>{{busines.email}}</span>
+                  
+                  <p class="card-text" style="color: black;">{{busines.description}}</p>
+                  <p class="card-text"style="color: black;">Owner: 
+                      {{ busines.user.user.username|title }}</p>
+                </div>
+          
+            </div>
+            {% endfor %}
+          </div>
+          <hr>
+          <div class="col-md-6 ">
+            <h5 class="D-block mx-auto tt" style="color:white;">Posts</h5>
+          
+              {% for post in posts %}
+              
+              
+              <div class= "card post">
+                  <div class="panel-header">
+                    <h5 class="card-title text-center" style="font-weight: 900;">{{post.title}}</h5>
+                  </div>
+                  <div class="panel-body">
+                    <p class="card-text"> {{post.post}} 
+                    </p>
+                    <p class="card-text">By: 
+                        {{ post.user.user.username|title }}<small
+                        style="float:right">{{post.date|date}}</small>
+                    </p>
+                  </div>
+                
+                </div>    
+              {% endfor %}
+            
+          </div>
+        </div>
+        
+
+        <hr>
+        <div class="modal fade" id="Business" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+          aria-hidden="true" >
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content"  style="background-color: #e29d93;">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle" style="text-align: center">Add Business</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form action="" method="post">
+                  {% csrf_token%}
+                  {{form|crispy}}
+                  <button type="submit" class="btn btn-md btn-info">Add</button>
+                  <button type="button" class="btn btn-md btn-outline-danger " data-dismiss="modal" style="float:right">
+                    Exit
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+</div>
+
+
+
+{% endblock %}

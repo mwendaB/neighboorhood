@@ -6,7 +6,7 @@ chardet
 cloudinary
 confusable-homoglyphs
 dj-database-url
-Django==3.2.9
+Django
 django-bootstrap4
 django-crispy-forms
 django-heroku
