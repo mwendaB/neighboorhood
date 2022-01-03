@@ -1,20 +1,28 @@
-<nav class="mb-1 navbar navbar-expand-lg navbar-dark  fixed-top" style="background-color: rgba(128, 128, 128, 0.657);">
-  <a class="navbar-brand header home" href="{% url 'index' %}">Hood Today</a>
+<nav class="mb-1 navbar navbar-expand-lg navbar-dark  sticky-top" >
+  <a class="navbar-brand header home" href="{% url 'index' %}">Neighborhood</a>
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
 aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
 <span class="navbar-toggler-icon"></span>
 </button>
+
 <div class="collapse navbar-collapse" id="navbarSupportedContent-333">
 <ul class="navbar-nav mr-auto">
-<li class="nav-item active">
-
+  <a class="navbar-brand " href="/admin">Admin</a>
 </ul>
 
 {% if user.is_authenticated %}
+<form class="form-inline mr-3"  role="search" aria-label="Search">
+  {% csrf_token %}
+     <input autocomplete="off" id="searching" class="form-control input-sm search" 
+      placeholder="&#xF002; search neighborhood"  style="font-family:Arial, FontAwesome" name="name">
+</form>
+
+
 <ul class="navbar-nav ml-auto nav-flex-icons"> 
 <li class="nav-item">
 <img class="rounded-circle nav-img" src="" alt="" style="height: 40px">
 </li>
+
 <li class="nav-item dropdown">
 <a class="nav-link dropdown-toggle header" id="navbarDropdownMenuLink-333" data-toggle="dropdown" aria-haspopup="true"
   aria-expanded="false" style="font-size: 20px; margin-right: 5rem; font-weight: 700;" href="">{{user.username}}

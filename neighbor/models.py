@@ -70,6 +70,19 @@ class Business(models.Model):
     def delete_business(self):
         self.delete()
 
+    # def create_business(self):
+    #     self.save()
+   
+    def update_business(self):
+        self.update()
+    
+    @classmethod
+    def find_business(cls, id):
+        business = cls.objects.get(id=id)
+        return business
+
+    def __str__(self):
+        return self.name
 
 class Post(models.Model):
     title = models.CharField(max_length=120, null=True)

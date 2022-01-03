@@ -2,10 +2,11 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
-<div class="container register page2">
+<div class="container row register page2">
+    <div class="col-md-4"></div>
     <div class="col-md-6 simonn mt-5">
-        <h3 class="title text-center header newhood">New Hood</h3>
-        <form class="hood-form"action="" method="POST" enctype="multipart/form-data" novalidate>
+        <h3 class="title text-center header newhood">New neighbourhood</h3>
+        <form class="hood-form p-5 "action="" method="POST" enctype="multipart/form-data" novalidate>
             {% csrf_token%}
             {{form | crispy}}
             <a href=""><button class="btn btn-info add2" type="submit">Add neighbourhood</button></a>
