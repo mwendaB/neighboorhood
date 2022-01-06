@@ -38,6 +38,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'neighbor',
     'bootstrap4',
+    'phone_field',
     'crispy_forms',
     'cloudinary',
     'django.contrib.admin',

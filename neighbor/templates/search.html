@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="" style="color: white;">
+{% for busines in businesses %}
+
+<div class="card-body">
+    <h6 class="card-title" style="font-size: 23px; font-weight: 900;">Name: 
+      {{busines.name}}</h6>
+    <span>Email: 
+      {{busines.email}}</span>
+    
+    <p class="card-text" >About: 
+      {{busines.description}}</p>
+    <p class="card-text">Owner: 
+        {{ busines.user.user.username|title }}</p>
+  </div>
+  {% endfor %}
+</div>
+  {% endblock %}

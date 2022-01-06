@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-
 <div class="">
   <div class="container-fluid" >
     <div class="container  add" >
@@ -20,11 +19,11 @@
             {% if request.user.profile.neighbourhood == hood %}
             <a href="{% url 'leave-hood' hood.id %}" class="btn btn-outline-danger btn-sm">Leave Neighbourhood</a>
 
-            <a href="{% url 'single-hood' user.profile.neighbourhood.id %}" class="btn btn-outline-primary btn-sm"
-              style="float: right; font-size: 10px;">Checkout {{user.profile.neighbourhood.name}} 
+            <a href="{% url 'single-hood' user.profile.neighbourhood.id %}" class="btn  btn-sm"
+              style="float: right; font-size: 10px; color: white; background-color: black;">Checkout {{user.profile.neighbourhood.name}} 
             </a>
             {% elif not request.user.profile.neighbourhood %}
-            <a href="{% url 'join-hood' hood.id %}" class="btn btn-info btn-sm">Join Neighbourood</a>
+            <a href="{% url 'join-hood' hood.id %}" class="btn  btn-sm" style="color: white; background-color: black;">Join Neighbourood</a>
             {% endif %}
           </div>
         </div>

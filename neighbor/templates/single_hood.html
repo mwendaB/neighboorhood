@@ -46,9 +46,13 @@
               <div class="card business mb-4">
                 <div class="card-body">
                   <h6 class="card-title" style="font-size: 23px; font-weight: 900;">{{busines.name}}</h6>
-                  <span>{{busines.email}}</span>
-                  
-                  <p class="card-text" style="color: black;">{{busines.description}}</p>
+                  <span>Email: 
+                    {{busines.email}}</span>
+                  <br>
+                  <br>
+                  <p class="card-text" style="color: black;">About: 
+                    <br>
+                    {{busines.description}}</p>
                   <p class="card-text"style="color: black;">Owner: 
                       {{ busines.user.user.username|title }}</p>
                 </div>

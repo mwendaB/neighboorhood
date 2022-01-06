@@ -11,10 +11,10 @@ aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Tog
 </ul>
 
 {% if user.is_authenticated %}
-<form class="form-inline mr-3"  role="search" aria-label="Search">
+<form class="form-inline mr-3" action="{% url 'search' %}"  role="search" aria-label="Search">
   {% csrf_token %}
      <input autocomplete="off" id="searching" class="form-control input-sm search" 
-      placeholder="&#xF002; search neighborhood"  style="font-family:Arial, FontAwesome" name="name">
+      placeholder="&#xF002; search neighborhood"  style="font-family:Arial, FontAwesome" name="search_term">
 </form>
 
 
@@ -27,7 +27,8 @@ aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Tog
 <a class="nav-link dropdown-toggle header" id="navbarDropdownMenuLink-333" data-toggle="dropdown" aria-haspopup="true"
   aria-expanded="false" style="font-size: 20px; margin-right: 5rem; font-weight: 700;" href="">{{user.username}}
 </a>
-<div class="dropdown-menu dropdown-menu-right dropdown-default" aria-labelledby="navbarDropdownMenuLink-333"> 
+<div class="dropdown-menu dropdown-menu-right dropdown-default" aria-labelledby="navbarDropdownMenuLink-333">
+  <a href="{%url 'profile' user.username%}" class="nav-link text-dark dropdown-item"><i class="fas fa-user"></i> Profile</a> 
   <a class="dropdown-item" href="{% url 'logout' %}">Log Out</a>
 </div>
 </li>

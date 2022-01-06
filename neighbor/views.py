@@ -2,10 +2,10 @@ from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from . forms import Registration
+from . forms import Registration,UpdateUserProfileForm,UpdateUserForm
 from django.http import HttpResponse, Http404,HttpResponseRedirect
 from django.contrib.auth.models import User
-from .forms import BusinessForm, UpdateProfileForm, NeighbourHoodForm, PostForm
+from .forms import BusinessForm, UpdateUserProfileForm, NeighbourHoodForm, PostForm
 from django.contrib.auth.decorators import login_required
 from .models import Neighbourhood, Profile, Business, Post
 from django.contrib import messages
@@ -25,6 +25,23 @@ def register(request):
     else:
         form = Registration()
     return render(request,'registration/registration_form.html',{"form":form})
+
+@login_required(login_url='login')
+def profile(request, username):
+    current_user=request.user
+           
+    if request.method == 'POST':
+        user_form = UpdateUserForm(request.POST, instance=request.user)
+        profile_form = UpdateUserProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            return HttpResponseRedirect(request.path_info)
+    else:
+        user_form = UpdateUserForm(instance=request.user)
+        profile_form = UpdateUserProfileForm(instance=request.user.profile)
+
+        return render(request, 'profile.html', {'user_form':user_form,'profile_form':profile_form})
 
 def login(request):
     if request.method == 'POST':
@@ -52,7 +69,7 @@ def index(request):
     return render(request, 'index.html', params)
 
 
-
+@login_required(login_url='login')
 def create_neighbourhood(request):
     if request.method == 'POST':
         form = NeighbourHoodForm(request.POST, request.FILES)
@@ -65,20 +82,21 @@ def create_neighbourhood(request):
         form = NeighbourHoodForm()
     return render(request, 'newhood.html', {'form': form})
 
-
+@login_required(login_url='login')
 def join_neighbourhood(request, id):
     neighbourhood = get_object_or_404(Neighbourhood, id=id)
     request.user.profile.neighbourhood = neighbourhood
     request.user.profile.save()
     return redirect('index')
 
-
+@login_required(login_url='login')
 def leave_neighbourhood(request, id):
     hood = get_object_or_404(Neighbourhood, id=id)
     request.user.profile.neighbourhood = None
     request.user.profile.save()
     return redirect('index')
 
+@login_required(login_url='login')
 def single_neighbourhood(request, hood_id):
     hood = Neighbourhood.objects.get(id=hood_id)
     business = Business.objects.filter(neighbourhood=hood)
@@ -103,6 +121,7 @@ def single_neighbourhood(request, hood_id):
     return render(request, 'single_hood.html', params)
 
 
+@login_required(login_url='login')
 def create_post(request, hood_id):
     hood = Neighbourhood.objects.get(id=hood_id)
     if request.method == 'POST':
@@ -117,7 +136,7 @@ def create_post(request, hood_id):
         form = PostForm()
     return render(request, 'post.html', {'form': form})
 
-
+@login_required(login_url='login')
 def search(request):
     if 'search_term' in request.GET and request.GET["search_term"]:
         search_term = request.GET.get("search_term")
@@ -128,3 +147,14 @@ def search(request):
     else:
         message = "You haven't searched for any term"
         return render(request, "search.html", {"message": message})
+
+def user_profile(request, username):
+    current_user=request.user       
+    user_poster = get_object_or_404(User, username=username)
+    
+    if request.user == user_poster:
+        return redirect('profile', username=request.user.username)
+      
+    return render(request, 'member.html', {'user_poster': user_poster,
+                                                     'current_user':current_user})
+    
