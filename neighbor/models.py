@@ -10,30 +10,10 @@ from cloudinary.models import CloudinaryField
 # Create your models here.
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    name = models.CharField(max_length=80, blank=True)
-    bio = models.TextField(max_length=254, blank=True)
-    profile_picture = CloudinaryField('image')
-    location = models.CharField(max_length=50, blank=True, null=True)
-    neighbourhood = models.ForeignKey('Neighbourhood', on_delete=models.SET_NULL, null=True, related_name='members', blank=True)
-
-    def __str__(self):
-        return f'{self.user.username} profile'
-
-    @receiver(post_save, sender=User)
-    def create_user_profile(sender, instance, created, **kwargs):
-        if created:
-            Profile.objects.create(user=instance)
-
-    @receiver(post_save, sender=User)
-    def save_user_profile(sender, instance, **kwargs):
-        instance.profile.save()
-
-class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,related_name='profile')
     bio = models.TextField(max_length=400, blank=True)
     name = models.CharField(blank=True, max_length=120)
-    profile_pic = models.ImageField(upload_to='images/',default='v1638783491/wekeypabjkv1wsoehsif.webp')
+    profile_pic = models.ImageField(upload_to='images/',default='https://res.cloudinary.com/dovhk8wwx/image/upload/v1638209812/tpj8elrjdjscbkpmqpkg.jpg')
     phone_number = PhoneField(max_length=15, blank=True)
     neighbourhood = models.ForeignKey('NeighbourHood', on_delete=models.SET_NULL, null=True, related_name='members', blank=True)
     
